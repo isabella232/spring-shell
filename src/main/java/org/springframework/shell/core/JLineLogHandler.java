@@ -29,6 +29,7 @@ import java.util.logging.Level;
 import java.util.logging.LogRecord;
 
 import jline.console.ConsoleReader;
+import jline.console.CursorBuffer;
 
 import org.fusesource.jansi.Ansi;
 import org.fusesource.jansi.Ansi.Attribute;
@@ -136,8 +137,8 @@ public class JLineLogHandler extends Handler {
 			}
 			lastMessage = toDisplay;
 
-			StringBuilder buffer = reader.getCursorBuffer().copy().buffer;
-			int cursor = reader.getCursorBuffer().cursor;
+			CursorBuffer cursorBuffer = reader.getCursorBuffer().copy();
+			int cursor = reader.getCursorBuffer().getCursor();
 			if (reader.getCursorBuffer().length() > 0) {
 				// The user has semi-typed something, so put a new line in so the debug message is separated
 				reader.println();
@@ -152,8 +153,8 @@ public class JLineLogHandler extends Handler {
 			// Now restore the line formatting settings back to their original
 			reader.setPrompt(shellPromptAccessor.getShellPrompt());
 
-			reader.getCursorBuffer().write(buffer.toString());
-			reader.getCursorBuffer().cursor = cursor;
+			reader.getCursorBuffer().write(cursorBuffer.toString());
+			reader.getCursorBuffer().setCursor(cursor);
 
 			reader.print(toDisplay);
 

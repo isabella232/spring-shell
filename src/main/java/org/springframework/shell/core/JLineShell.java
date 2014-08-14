@@ -20,7 +20,6 @@ import static org.fusesource.jansi.Ansi.ansi;
 import java.io.File;
 import java.io.FileDescriptor;
 import java.io.FileInputStream;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
@@ -44,6 +43,8 @@ import jline.console.history.History;
 import jline.console.history.MemoryHistory;
 
 import org.apache.commons.io.input.ReversedLinesFileReader;
+import org.apache.commons.io.output.FileWriterWithEncoding;
+
 import org.fusesource.jansi.Ansi;
 import org.fusesource.jansi.Ansi.Attribute;
 import org.fusesource.jansi.Ansi.Color;
@@ -91,7 +92,7 @@ public abstract class JLineShell extends AbstractShell implements Shell, Runnabl
 
 	private boolean developmentMode = false;
 
-	private FileWriter fileLog;
+	private FileWriterWithEncoding fileLog;
 
 	private final DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
@@ -560,7 +561,7 @@ public abstract class JLineShell extends AbstractShell implements Shell, Runnabl
 
 	private void openFileLogIfPossible() {
 		try {
-			fileLog = new FileWriter(getHistoryFileName(), true);
+			fileLog = new FileWriterWithEncoding(getHistoryFileName(), "UTF-8", true);
 			// First write, so let's record the date and time of the first user command
 			fileLog.write("// " + getProductName() + " " + versionInfo() + " log opened at " + df.format(new Date())
 					+ "\n");
