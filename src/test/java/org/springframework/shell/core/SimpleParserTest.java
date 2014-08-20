@@ -54,6 +54,9 @@ public class SimpleParserTest {
 	@Test
 	public void testNormaliseMultipleWords() {
 		assertNormalised(" security   setup ", "security setup");
+		String testString = "aaa    \"a     bc\"  \"ddsssdd\" sssdfs   \"aa\" cc ee";
+		String expectedString = "aaa \"a     bc\" \"ddsssdd\" sssdfs \"aa\" cc ee";
+		assertNormalised(testString, expectedString);
 	}
 
 	/**

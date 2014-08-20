@@ -363,7 +363,39 @@ public class SimpleParser implements Parser {
 	 */
 	String normalise(final String rawInput) {
 		// Replace all multiple spaces with a single space and then trim
-		return rawInput.replaceAll(" +", " ").trim();
+		return shrinkSpace(rawInput);
+	}
+
+	private String shrinkSpace(final String str) {
+		StringBuffer sb = new StringBuffer();
+		char[] characters = str.toCharArray();
+		int index = 0;
+		boolean metSpace = true;
+		boolean metDoubleQuotationMarks = false;
+		for (char character : characters) {
+			if (!metDoubleQuotationMarks) {
+				switch (character) {
+				case ' ':
+					if ((metSpace == false) && (index != characters.length - 1)) {
+						sb.append(' ');
+					}
+					metSpace = true;
+					break;
+				case '"':
+					metDoubleQuotationMarks = true;
+				default:
+					metSpace = false;
+					sb.append(character);
+				}
+			} else {
+				if (character == '"') {
+					metDoubleQuotationMarks = false;
+				}
+				sb.append(character);
+			}
+			index++;
+		}
+		return sb.toString();
 	}
 
 	private Set<String> getSpecifiedUnavailableOptions(final Set<CliOption> cliOptions,
