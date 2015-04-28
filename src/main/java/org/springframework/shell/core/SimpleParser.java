@@ -403,12 +403,12 @@ public class SimpleParser implements Parser {
 		Set<String> cliOptionKeySet = new LinkedHashSet<String>();
 		for (CliOption cliOption : cliOptions) {
 			for (String key : cliOption.key()) {
-				cliOptionKeySet.add(key.toLowerCase());
+				cliOptionKeySet.add(key);
 			}
 		}
 		Set<String> unavailableOptions = new LinkedHashSet<String>();
 		for (String suppliedOption : options.keySet()) {
-			if (!cliOptionKeySet.contains(suppliedOption.toLowerCase())) {
+			if (!cliOptionKeySet.contains(suppliedOption)) {
 				unavailableOptions.add(suppliedOption);
 			}
 		}
@@ -495,7 +495,8 @@ public class SimpleParser implements Parser {
 		String bufferToReturn = null;
 		String lastWord = null;
 
-		next_buffer_loop: for (int bufferIndex = 0; bufferIndex < buffer.length(); bufferIndex++) {
+		next_buffer_loop:
+		for (int bufferIndex = 0; bufferIndex < buffer.length(); bufferIndex++) {
 			String bufferSoFarIncludingThis = buffer.substring(0, bufferIndex + 1);
 			String bufferRemaining = buffer.substring(bufferIndex + 1);
 
@@ -980,7 +981,7 @@ public class SimpleParser implements Parser {
 	}
 
 	public void obtainHelp(
-			@CliOption(key = { "", "command" }, optionContext = "availableCommands", help = "Command name to provide help for")
+			@CliOption(key = {"", "command"}, optionContext = "availableCommands", help = "Command name to provide help for")
 			String buffer) {
 		synchronized (mutex) {
 			if (buffer == null) {
